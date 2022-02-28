@@ -6,7 +6,6 @@
     "node": "14.18.1"
   },
   "scripts": {
-    "start": "nodemon index.js",
     "test": "echo \"No test specified\" && exit 0"
   },
   "author": "",
