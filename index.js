@@ -18,7 +18,7 @@ app.use((req, res, next) => {
     let validIps = ['::12', '::1', '::ffff:127.0.0.1']; // Put your IP whitelist in this array
 
     console.log("req.socket.remoteAddress",req.socket.remoteAddress)
-    if(!process.env.whitelistIp){
+    if(!(!!process.env.whitelistIp)){
         console.log("IP ok");
         next();
     }
@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
     console.log('Error handler', err);
     res.status(err.status || 500);
-    res.send("Something broke");
+    res.send("IP is not whitelisted");
 });
 
 app.get('/', (req, res) => {
