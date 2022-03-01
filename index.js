@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const Process = require("process");
 const port = 3000
 
 app.use(cors());
@@ -70,4 +71,4 @@ app.post('/api/signature/:apiKey', function (req, res) {
     return res.send({success:true, signature});
 });
 
-app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
+app.listen(Process.env.PORT || 3000, () => console.log(`Hello world app listening on port ${port}!`));
