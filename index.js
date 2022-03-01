@@ -15,10 +15,10 @@ app.use(bodyParser.json());
 
 // Custom Middleware
 app.use((req, res, next) => {
-    let validIps = ['::12', '::1', '::ffff:127.0.0.1']; // Put your IP whitelist in this array
-
+    let validIps = ['::12','::1' ,'::ffff:127.0.0.1']; // Put your IP whitelist in this array
+    console.log("process", typeof process.env.whitelistIp)
     console.log("req.socket.remoteAddress",req.socket.remoteAddress)
-    if(!(!!process.env.whitelistIp)){
+    if(process.env.whitelistIp === "inactive"){
         console.log("IP ok");
         next();
     }
@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
     console.log('Error handler', err);
     res.status(err.status || 500);
-    res.send("IP is not whitelisted");
+    res.send("get your ip whitelisted for accessing this");
 });
 
 app.get('/', (req, res) => {
@@ -70,4 +70,4 @@ app.post('/api/signature/:apiKey', function (req, res) {
     return res.send({success:true, signature});
 });
 
-app.listen(process.env.PORT || 3000, () => console.log(`Hello world app listening on port ${port}!`));
+app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
