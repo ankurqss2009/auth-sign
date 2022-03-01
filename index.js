@@ -18,9 +18,11 @@ app.use((req, res, next) => {
     let validIps = ['::12', '::1', '::ffff:127.0.0.1']; // Put your IP whitelist in this array
 
     console.log("req.socket.remoteAddress",req.socket.remoteAddress)
-    if(!process.env.whitelistIp || validIps.includes(req.socket.remoteAddress)){
-        // IP is ok, so go on
+    if(!process.env.whitelistIp){
         console.log("IP ok");
+        next();
+    }
+    else if(validIps.includes(req.socket.remoteAddress)){
         next();
     }
     else{
@@ -39,12 +41,15 @@ app.use((err, req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World, from express on key '+ process.env.privateKey);
+    res.send('Hello , please use post api to get signature');
 });
 
 app.post('/api/signature/:apiKey', function (req, res) {
     if(req.params.apiKey !== process.env.secretKey){
-        return res.send("invalid api key");
+        return res.send({success:false, message:"invalid api key"});
+    }
+    if(!process.env.privateKey){
+        return res.send({success:false, message:"private key not found"});
     }
     let address = req.body.address;
     let amount = req.body.amount;
@@ -62,7 +67,7 @@ app.post('/api/signature/:apiKey', function (req, res) {
         message,
         process.env.privateKey
     );
-    return res.send(signature);
+    return res.send({success:true, signature});
 });
 
-app.listen(port, () => console.log(`Hello world app listening on port ${port}!`));
+app.listen(process.env.PORT || 3000, () => console.log(`Hello world app listening on port ${port}!`));
