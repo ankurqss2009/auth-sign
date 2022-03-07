@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 // Custom Middleware
 app.use((req, res, next) => {
-    let validIps = ['::12','::1' ,'::ffff:127.0.0.1','113.193.255.159']; // Put your IP whitelist in this array
+    let validIps = ['::12','::1' ,'::ffff:127.0.0.1','113.193.255.159','106.210.4.203']; // Put your IP whitelist in this array
     console.log("process", typeof process.env.whitelistIp)
     console.log("req.socket.remoteAddress",req.socket.remoteAddress)
     console.log("req.headers['x-forwarded-for'])",req.headers['x-forwarded-for'])
