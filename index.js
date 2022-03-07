@@ -19,6 +19,8 @@ app.use((req, res, next) => {
     let validIps = ['::12','::1' ,'::ffff:127.0.0.1']; // Put your IP whitelist in this array
     console.log("process", typeof process.env.whitelistIp)
     console.log("req.socket.remoteAddress",req.socket.remoteAddress)
+    console.log("req.headers['x-forwarded-for'])",rreq.headers['x-forwarded-for'])
+    
     if(process.env.whitelistIp === "inactive"){
         console.log("IP ok");
         next();
