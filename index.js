@@ -16,16 +16,16 @@ app.use(bodyParser.json());
 
 // Custom Middleware
 app.use((req, res, next) => {
-    let validIps = ['::12','::1' ,'::ffff:127.0.0.1']; // Put your IP whitelist in this array
+    let validIps = ['::12','::1' ,'::ffff:127.0.0.1','113.193.255.159']; // Put your IP whitelist in this array
     console.log("process", typeof process.env.whitelistIp)
     console.log("req.socket.remoteAddress",req.socket.remoteAddress)
     console.log("req.headers['x-forwarded-for'])",req.headers['x-forwarded-for'])
-    
+    let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress
     if(process.env.whitelistIp === "inactive"){
         console.log("IP ok");
         next();
     }
-    else if(validIps.includes(req.socket.remoteAddress)){
+    else if(validIps.includes(clientIp)){
         next();
     }
     else{
